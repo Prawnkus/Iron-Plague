@@ -7,12 +7,6 @@ public class InputControl : MonoBehaviour {
 	public int inputDevice = 0;
 	float delay = 0.0f;
 
-	// Use this for initialization
-	void Start () {
-	 
-	}
-	
-	// Update is called once per frame
 	void Update () {
 		//Toggle input method
 		// 0=Keyboard
