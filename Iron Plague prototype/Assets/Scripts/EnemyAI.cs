@@ -6,14 +6,14 @@ public class EnemyAI : MonoBehaviour {
     private float speed, rotationSpeed;
     private bool canSeeTarget, isAimingAt, hasSeenPlayer;
     private RaycastHit hit, playerHit;
-    private Vector3 direction;
+    private Vector3 direction = Vector3.zero;
     private Transform direct;
 
     private Rigidbody rb;
     [SerializeField]
     private GameObject player;
     [SerializeField]
-    private GameObject passiveWalkLocation1, passiveWalkLocation2;
+    private Transform passiveWalkLocation1, passiveWalkLocation2;
 
     void Start()
     {
@@ -21,6 +21,7 @@ public class EnemyAI : MonoBehaviour {
         rotationSpeed = 3.0f;
         rb = transform.GetComponent<Rigidbody>();
         player = GameObject.FindGameObjectWithTag("Player");
+        direction = (passiveWalkLocation1.position - this.transform.position).normalized;
     }
 
     void FixedUpdate()
@@ -30,30 +31,30 @@ public class EnemyAI : MonoBehaviour {
             ShootAtTarget(player.transform);
 
         if(Physics.Raycast(this.transform.position, player.transform.position, out playerHit))
-        {
             if (playerHit.collider.gameObject.tag == "Player" && !IsTooFarAway(player.transform))
                 hasSeenPlayer = true;
 
-            if (hasSeenPlayer)
-            {
-                AimTowardsTarget(player.transform);
-                if (IsTooFarAway(player.transform))
-                    rb.MovePosition(this.transform.position + this.transform.forward * speed * Time.fixedDeltaTime);
-                else
-                    ShootAtTarget(player.transform);
-            }
-            else if (!hasSeenPlayer)
-            {
-                PassivePathing(direction, passiveWalkLocation1.transform, passiveWalkLocation1.transform);
-                AimTowardsTarget(direct);
-            }
+        if (hasSeenPlayer)
+        {
+            AimTowardsTarget(player.transform);
+            if (IsTooFarAway(player.transform))
+                rb.MovePosition(this.transform.position + this.transform.forward * speed * Time.fixedDeltaTime);
+            else
+                ShootAtTarget(player.transform);
+        }
+        else if (!hasSeenPlayer)
+        {
+            PassivePathing(direction, passiveWalkLocation1, passiveWalkLocation1);
+            rb.MovePosition(this.transform.position + this.transform.forward * speed * Time.fixedDeltaTime);
+            Debug.Log("MOVING - Passive");
+            AimTowardsTarget(direct);
         }
     }
 
 
     private void ShootAtTarget(Transform target)
     {
-        
+        Debug.Log("Bam! Bam!");
     }
 
     private void AimTowardsTarget(Transform target)
@@ -91,16 +92,16 @@ public class EnemyAI : MonoBehaviour {
 
     public Vector3 Direction(Transform target)
     {
-        direction = target.position - this.transform.position;
+        direction = (target.position - this.transform.position).normalized;
         direct.position = direction;
         return direction;
     }
 
     private void PassivePathing(Vector3 targetLocation, Transform location1, Transform location2)
     {
-        if (Vector3.Distance(targetLocation, location1.position) < 0.2f)
+        if (Vector3.Distance(targetLocation, location1.position) < 1.0f)
             Direction(location2);
-        else if (Vector3.Distance(targetLocation, location2.position) < 0.2f)
+        else if (Vector3.Distance(targetLocation, location2.position) < 1.0f)
             Direction(location1);
     }
 }
