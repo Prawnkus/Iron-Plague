@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyAIControls : MonoBehaviour {
 
     private float speed, rotationSpeed;
-    private bool canSeeTarget, isAimingAt, hasSeenPlayer;
+    private bool canSeeTarget, isAimingAt, hasSeenTarget;
     private RaycastHit hit, playerHit;
     private Vector3 direction = Vector3.zero;
     private Transform direct;
@@ -17,6 +17,7 @@ public class EnemyAIControls : MonoBehaviour {
 
     void Start()
     {
+        rotationSpeed = 150f;
         agent = this.transform.GetComponent<NavMeshAgent>();
         if (DistanceFromTarget(destination1.position) < DistanceFromTarget(destination2.position))
             MoveToTarget(destination2.position);
@@ -26,19 +27,35 @@ public class EnemyAIControls : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (hasSeenPlayer)
+        if (hasSeenTarget)
         {
-            if (DistanceFromTarget(player.position) < 15.0f)
-                StopMoving();
-            else
+            if (Physics.Raycast(this.transform.position, Direction(player), out playerHit))
+            {
+                if (DistanceFromTarget(player.position) < 25.0f)
+                    if (playerHit.collider.gameObject.tag == player.tag)
+                        canSeeTarget = true;
+                    else if (playerHit.collider.gameObject.tag != player.tag)
+                        canSeeTarget = false;
+            }
+
+            if (DistanceFromTarget(player.position) <= 15.0f && canSeeTarget)
+            {
+                if (!agent.SetDestination(this.transform.position))
+                    StopMoving();
+                AimTowardsTarget(player);
+            }
+            else if (DistanceFromTarget(player.position) > 15.0f || !canSeeTarget)
                 MoveToTarget(player.position);
         }
         else
         {
             PassivePathing(destination1, destination2);
-            if (Physics.Raycast(this.transform.position, Direction(player), out playerHit) && DistanceFromTarget(player.position) < 25.0f)
-                if (playerHit.collider.gameObject.tag == "Player")
-                    hasSeenPlayer = true;
+            if (Physics.Raycast(this.transform.position, Direction(player), out playerHit))
+            {
+                if (DistanceFromTarget(player.position) < 25.0f)
+                    if (playerHit.collider.gameObject.tag == player.tag)
+                        hasSeenTarget = true;
+            }
         }
     }
 
@@ -57,11 +74,6 @@ public class EnemyAIControls : MonoBehaviour {
         agent.destination = target;
     }
 
-    public float Angle(Vector3 targetDirection)
-    {
-        return Vector3.Angle(this.transform.forward, targetDirection);
-    }
-
     public Vector3 Direction(Transform target)
     {
         return (target.position - this.transform.position).normalized;
@@ -75,22 +87,31 @@ public class EnemyAIControls : MonoBehaviour {
             MoveToTarget(destination1.position);
     }
 
-    private void AimTowardsTarget(Transform target)
+    private void RayTowardsTarget(Transform target, bool _seesTarget)
     {
-        if (!CanSeeTarget(target))
+        if (Physics.Raycast(this.transform.position, Direction(target), out playerHit))
         {
-            float angle = Mathf.Atan2(Direction(target).y, Direction(target).x) * Mathf.Rad2Deg;
-            Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, rotation, Time.fixedDeltaTime * rotationSpeed);
+            if (DistanceFromTarget(player.position) < 25.0f)
+                if (playerHit.collider.gameObject.tag == target.tag)
+                    _seesTarget = true;
         }
+        else
+            _seesTarget = false;
     }
 
-    private bool CanSeeTarget(Transform target)
+    private void AimTowardsTarget(Transform target)
     {
-        bool canSee = false;
-        if (Angle(Direction(player)) < 10.0f && Physics.Raycast(this.transform.position, this.transform.forward, out hit))
-            if (DistanceFromTarget(hit.collider.gameObject.transform.position) >= DistanceFromTarget(target.forward))
-                canSee = true;
-        return canSee;
+        if (Vector3.Angle(this.transform.forward, Direction(player)) >= 10.0f)
+        {
+            //float angle = Mathf.Atan2(Direction(target).y, Direction(target).x) * Mathf.Rad2Deg;
+            //Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            agent.updateRotation = true;
+            Quaternion rotation = Quaternion.LookRotation(Direction(player));
+            //this.transform.rotation = Quaternion.Slerp(this.transform.rotation, rotation, Time.fixedDeltaTime * rotationSpeed);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, Time.fixedDeltaTime * rotationSpeed);
+            Debug.Log("Rotating");
+        }
+        else
+            agent.updateRotation = false;
     }
 }
