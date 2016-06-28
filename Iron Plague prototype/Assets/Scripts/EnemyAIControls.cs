@@ -3,20 +3,30 @@ using System.Collections;
 
 public class EnemyAIControls : MonoBehaviour {
 
-    private float speed, rotationSpeed;
-    private bool canSeeTarget, isAimingAt, hasSeenTarget;
+    private float rotationSpeed, shootTimer, delay;
+    private bool canSeeTarget, isAimingAt;
     private RaycastHit hit, playerHit;
     private Vector3 direction = Vector3.zero;
     private Transform direct;
+    [HideInInspector]
+    public float health = 100.0f;
+    [HideInInspector]
+    public bool hasSeenTarget;
 
     private NavMeshAgent agent;
     [SerializeField]
     private Transform player;
     [SerializeField]
     private Transform destination1, destination2;
+    [SerializeField]
+    private GameObject weapon;
+    [SerializeField]
+    private GameObject projectile;
 
     void Start()
     {
+        delay = 1.3f;
+        shootTimer = delay;
         rotationSpeed = 150f;
         agent = this.transform.GetComponent<NavMeshAgent>();
         if (DistanceFromTarget(destination1.position) < DistanceFromTarget(destination2.position))
@@ -29,6 +39,7 @@ public class EnemyAIControls : MonoBehaviour {
     {
         if (hasSeenTarget)
         {
+            // When the enemy has seen the player, it will chase it until death.
             if (Physics.Raycast(this.transform.position, Direction(player), out playerHit))
             {
                 if (DistanceFromTarget(player.position) < 25.0f)
@@ -49,6 +60,7 @@ public class EnemyAIControls : MonoBehaviour {
         }
         else
         {
+            // Passive pratrol pathing
             PassivePathing(destination1, destination2);
             if (Physics.Raycast(this.transform.position, Direction(player), out playerHit))
             {
@@ -57,6 +69,9 @@ public class EnemyAIControls : MonoBehaviour {
                         hasSeenTarget = true;
             }
         }
+        // Death
+        if (health <= 0.0f)
+            Destroy(this);
     }
 
     public float DistanceFromTarget(Vector3 target)
@@ -87,31 +102,33 @@ public class EnemyAIControls : MonoBehaviour {
             MoveToTarget(destination1.position);
     }
 
-    private void RayTowardsTarget(Transform target, bool _seesTarget)
-    {
-        if (Physics.Raycast(this.transform.position, Direction(target), out playerHit))
-        {
-            if (DistanceFromTarget(player.position) < 25.0f)
-                if (playerHit.collider.gameObject.tag == target.tag)
-                    _seesTarget = true;
-        }
-        else
-            _seesTarget = false;
-    }
-
     private void AimTowardsTarget(Transform target)
     {
-        if (Vector3.Angle(this.transform.forward, Direction(player)) >= 10.0f)
+        if (Vector3.Angle(this.transform.forward, Direction(player)) >= 8.5f)
         {
-            //float angle = Mathf.Atan2(Direction(target).y, Direction(target).x) * Mathf.Rad2Deg;
-            //Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             agent.updateRotation = true;
             Quaternion rotation = Quaternion.LookRotation(Direction(player));
-            //this.transform.rotation = Quaternion.Slerp(this.transform.rotation, rotation, Time.fixedDeltaTime * rotationSpeed);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, Time.fixedDeltaTime * rotationSpeed);
-            Debug.Log("Rotating");
+            shootTimer = delay / 2.0f;
         }
         else
+        {
             agent.updateRotation = false;
+            Shoot();
+        }
+    }
+
+    private void Shoot()
+    {
+        if (shootTimer >= delay)
+        {
+            GameObject clone = null;
+            clone = Instantiate(projectile, weapon.transform.position, weapon.transform.rotation) as GameObject;
+            clone.GetComponent<ShootingProjectile>().shotByPlayer = false;
+            clone.GetComponent<Rigidbody>().AddForce(clone.transform.forward * 1000f);
+            shootTimer = 0.0f;
+        }
+        else
+            shootTimer += Time.fixedDeltaTime;
     }
 }
