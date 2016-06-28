@@ -31,8 +31,8 @@ public class InputControl : MonoBehaviour {
         lh = Input.GetAxis("Horizontal");
         lv = Input.GetAxis("Vertical");
         if (inputDevice == 0) {
-			rh = Input.GetAxis ("Keyboard_J+L");
-			rv = Input.GetAxis ("Keyboard_K+I");
+			//rh = Input.GetAxis ("Keyboard_J+L");
+			//rv = Input.GetAxis ("Keyboard_K+I");
             
 		}
 		if (inputDevice == 1) {
