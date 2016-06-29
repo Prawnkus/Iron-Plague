@@ -28,7 +28,7 @@ public class ShootingProjectile : MonoBehaviour {
             opponentTag = "Player";
             partiles.startColor = Color.red;
         }
-        damage = -25.0f;
+        damage = 15.0f;
     }
 
     void OnCollisionEnter(Collision col)
@@ -36,14 +36,14 @@ public class ShootingProjectile : MonoBehaviour {
 
         if (col.gameObject.tag == opponentTag)
         {
-            if (opponentTag == "enemy")
-                col.gameObject.GetComponent<EnemyAIControls>().health -= damage;
-            Debug.Log(opponentTag + " Hit");
+            if (opponentTag == "Enemy")
+            {
+                col.gameObject.GetComponent<EnemyAIControls>().TakeDamage(true, damage);
+            }
+            else if (opponentTag == "Player")
+                col.gameObject.GetComponent<PlayerMovement>().health -= damage;
         }
-        if (col.gameObject.tag == "Environment")
-        {
-            Debug.Log("Nothing Hit");
-        }
+
         Destroy(this.gameObject);
     }
 }

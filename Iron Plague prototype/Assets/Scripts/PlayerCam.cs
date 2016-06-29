@@ -3,7 +3,9 @@ using System.Collections;
 
 public class PlayerCam : MonoBehaviour {
 
-	private float yRotation, xRotation, currYRot, currXRot, yRotVelocity, xRotVelocity;
+	private float yRotation, xRotation, currXRot, yRotVelocity, xRotVelocity;
+    [HideInInspector]
+    public float currYRot;
 	[SerializeField]
 	private float sensitivity = 5;
 
@@ -23,7 +25,7 @@ public class PlayerCam : MonoBehaviour {
 		currYRot = Mathf.SmoothDamp (currYRot,yRotation, ref yRotVelocity, 0.1f);
 		currXRot = Mathf.SmoothDamp (currXRot,xRotation, ref xRotVelocity, 0.1f);
 
-		transform.rotation = Quaternion.Euler (xRotation, yRotation, 0);
+        transform.rotation = Quaternion.Euler(this.transform.rotation.x + currXRot, this.transform.rotation.y + currYRot, this.transform.rotation.z);
 
 	}
 }

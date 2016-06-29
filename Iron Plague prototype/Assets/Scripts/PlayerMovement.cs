@@ -7,6 +7,12 @@ public class PlayerMovement : MonoBehaviour {
 	private float playerSpeed;
 	[SerializeField]
 	private float playerGravity = 20.0f;
+    private float jumpSpeed = 8.5f;
+    [HideInInspector]
+    public float health = 100.0f, dmgToTake;
+    [HideInInspector]
+    public bool hasTakenDamage;
+
 
 	//private Rigidbody rb;
 
@@ -14,12 +20,15 @@ public class PlayerMovement : MonoBehaviour {
 
 	private CharacterController controller;
 
+    private PlayerCam cam;
+
 	private Vector3 moveDirection = Vector3.zero;
 
 
 	void Start () {
 
 		//rb = GetComponent<Rigidbody> ();
+        cam = GameObject.FindWithTag("MainCamera").GetComponent<PlayerCam>();
 		GameObject gameManager = GameObject.Find ("GameManager");
 		inputControl = gameManager.GetComponent<InputControl> ();
 
@@ -32,18 +41,24 @@ public class PlayerMovement : MonoBehaviour {
 			moveDirection = new Vector3 (inputControl.lh, 0, inputControl.lv);
 			moveDirection = transform.TransformDirection (moveDirection);
 			moveDirection *= playerSpeed;
+            if (Input.GetKeyDown(KeyCode.Space))
+                moveDirection.y = jumpSpeed;
 		}
 
-		//rb.velocity = moveDirection * playerSpeed;
-		//rb.AddForce ((Vector3.right * inputControl.lh * playerSpeed) * 100 * Time.deltaTime);
-		//rb.AddForce ((Vector3.forward * inputControl.lv * playerSpeed) * 100 * Time.deltaTime);
-
+        transform.rotation = Quaternion.Euler(0.0f, cam.currYRot, 0.0f);
 
 		moveDirection.y -= playerGravity * Time.deltaTime;
 
 		controller.Move (moveDirection * Time.deltaTime);
 
-		}
-
 	}
+
+    public void TakeDamage(bool state, float dmg)
+    {
+        hasTakenDamage = state;
+        dmgToTake = dmg;
+    }
+
+}
+
 
