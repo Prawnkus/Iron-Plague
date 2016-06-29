@@ -47,6 +47,9 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\EnemyAIControls.cs" />
      <Compile Include="Assets\Scripts\InputControl.cs" />
+     <Compile Include="Assets\Scripts\PlayerCam.cs" />
+     <Compile Include="Assets\Scripts\PlayerHUD.cs" />
+     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\ShootingProjectile.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
