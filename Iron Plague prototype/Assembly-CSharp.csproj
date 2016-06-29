@@ -48,8 +48,13 @@
      <Compile Include="Assets\Scripts\EnemyAIControls.cs" />
      <Compile Include="Assets\Scripts\InputControl.cs" />
      <Compile Include="Assets\Scripts\PlayerCam.cs" />
+<<<<<<< HEAD
      <Compile Include="Assets\Scripts\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\PlayerShoot.cs" />
+=======
+     <Compile Include="Assets\Scripts\PlayerHUD.cs" />
+     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
+>>>>>>> origin/master
      <Compile Include="Assets\Scripts\ShootingProjectile.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Jacob/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

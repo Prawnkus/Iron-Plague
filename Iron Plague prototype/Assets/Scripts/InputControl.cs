@@ -4,6 +4,7 @@ using System.Collections;
 public class InputControl : MonoBehaviour {
 
     public float lv, lh, rv, rh, ls, rs;
+	public bool q;
 	public int inputDevice = 0;
 	float delay = 0.0f;
 
@@ -33,7 +34,7 @@ public class InputControl : MonoBehaviour {
         if (inputDevice == 0) {
 			//rh = Input.GetAxis ("Keyboard_J+L");
 			//rv = Input.GetAxis ("Keyboard_K+I");
-            
+			q = Input.GetKeyDown(KeyCode.Q);
 		}
 		if (inputDevice == 1) {
 			rh = Input.GetAxis ("Xbox_RAnalogH");

@@ -1,4 +1,8 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/Scenes/PlayerMovTesting.unity
+=======
+- path: Assets/Scenes/PlayerGUItesting.unity
+>>>>>>> origin/master
   isLoaded: 1
   isActive: 1
