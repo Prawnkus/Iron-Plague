@@ -9,12 +9,15 @@ public class PlayerHUD : MonoBehaviour {
 	public int clipAmmoLeft;
 	public int clipAmmoCap = 30;
 
-	private float chargeAmount;
+    public bool qPressed, activeAbility;
+    [HideInInspector]
+	public float chargeAmount;
 	private float chargeSpeed = 30f;
 
 	public Texture2D currTex;
 	public Texture2D chargeDoneTex;
 	public Texture2D chargingTex;
+    public Texture2D activeTex;
 	public Texture crosshairCenter;
 
 	public float crosshairSize = 20f;
@@ -29,15 +32,19 @@ public class PlayerHUD : MonoBehaviour {
 	void Update(){
 
 		//Ability charge bar
-		bool qPressed = GameObject.Find ("GameManager").GetComponent<InputControl> ().q;
+		qPressed = GameObject.Find ("GameManager").GetComponent<InputControl> ().q;
 		if(qPressed && chargeAmount == 500f){
-			chargeAmount = 0;
+			//chargeAmount = 0;
+            activeAbility = true;
+            currTex = activeTex;
 			//Activate ability
 		}
-		if (chargeAmount < 500) {
+		else if (chargeAmount < 500) {
+            activeAbility = false;
 			chargeAmount += chargeSpeed * Time.deltaTime;
 			currTex = chargingTex;
-		} else if (chargeAmount >= 500) {
+		} 
+        else if (chargeAmount > 500) {
 			chargeAmount = 500;
 			currTex = chargeDoneTex;
 		}
