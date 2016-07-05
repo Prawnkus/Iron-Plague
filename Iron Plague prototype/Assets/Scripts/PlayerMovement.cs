@@ -27,18 +27,30 @@ public class PlayerMovement : MonoBehaviour {
 	private Vector3 moveDirection = Vector3.zero;
 
 
-	void Start () {
+	void Awake () {
         isAlive = true;
-		//rb = GetComponent<Rigidbody> ();
+        controller = GetComponent<CharacterController>();
         cam = GameObject.FindWithTag("MainCamera").GetComponent<PlayerCam>();
-        respawnSystem = GameObject.Find("RespawnSystem").GetComponent<RespawnSystem>();
+        respawnSystem = GameObject.Find("Respawn System").GetComponent<RespawnSystem>();
 		GameObject gameManager = GameObject.Find ("GameManager");
 		inputControl = gameManager.GetComponent<InputControl> ();
-
-		controller = GetComponent<CharacterController> ();
 	}
 
 	void Update () {
+
+        if (hasTakenDamage)
+        {
+            if (health <= 0)
+            {
+                health = 0;
+                DeathSequence();
+            }
+            else
+            {
+                health -= dmgToTake;
+                hasTakenDamage = false;
+            }
+        }
 
         if (isAlive)
         {
@@ -59,21 +71,6 @@ public class PlayerMovement : MonoBehaviour {
         }
 	}
 
-    void FixedUpdate()
-    {
-        if (hasTakenDamage)
-        {
-            if (health <= 0)
-            {
-                DeathSequence();
-            }
-            else
-            {
-                health -= dmgToTake;
-                hasTakenDamage = false;
-            }
-        }
-    }
 
     public void TakeDamage(bool state, float dmg)
     {
@@ -94,6 +91,7 @@ public class PlayerMovement : MonoBehaviour {
         {
             respawnSystem.Respawn(this.transform);
             isAlive = true;
+            health = 100.0f;
         }
     }
 }

@@ -22,15 +22,15 @@ public class EnemyAIControls : MonoBehaviour {
     private Transform player, destination1, destination2;
     [SerializeField]
     private GameObject weapon, projectile, baseObj;
+    private PlayerHUD hud;
 
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         agent = this.transform.GetComponent<NavMeshAgent>();
         rend = GetComponent<Renderer>();
-        if (DistanceFromTarget(destination1.position) < DistanceFromTarget(destination2.position))
-            MoveToTarget(destination2.position);
-        else
-            MoveToTarget(destination1.position);
+        hud = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<PlayerHUD>();
+        MoveToTarget(destination1.position);
 
         baseColor = Color.gray;
         delay = 0.25f;
@@ -94,7 +94,10 @@ public class EnemyAIControls : MonoBehaviour {
             dmgTimer = 0.0f;
 
         if (health <= 0.0f)
+        {
+            hud.IncreaseCharger((int)Random.Range(5, 7));
             Destroy(baseObj);
+        }
 
     }
 

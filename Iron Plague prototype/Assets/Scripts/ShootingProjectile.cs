@@ -9,40 +9,27 @@ public class ShootingProjectile : MonoBehaviour {
     public float damage;
     [SerializeField]
     private ParticleSystem partiles;
-    private string controllerTag, opponentTag;
+    private string opponentTag = "Player";
 
     void Start()
     {
         if (!transform.GetComponent<Rigidbody>())
             Debug.Log("Missing Rigidbody on projectiles!");
-
+        damage = 15.0f;
+        partiles.startColor = Color.red;
         if (shotByPlayer)
         {
-            controllerTag = "Player";
             opponentTag = "Enemy";
             partiles.startColor = Color.cyan;
         }
-        else
-        {
-            controllerTag = "Enemy";
-            opponentTag = "Player";
-            partiles.startColor = Color.red;
-        }
-        damage = 15.0f;
     }
 
     void OnCollisionEnter(Collision col)
     {
-
-        if (col.gameObject.tag == opponentTag)
-        {
-            if (opponentTag == "Enemy")
-            {
-                col.gameObject.GetComponent<EnemyAIControls>().TakeDamage(true, damage);
-            }
-            else if (opponentTag == "Player")
-                col.gameObject.GetComponent<PlayerMovement>().health -= damage;
-        }
+        if (col.gameObject.tag == "Enemy" && opponentTag == "Enemy")
+            col.gameObject.GetComponent<EnemyAIControls>().TakeDamage(true, damage);
+        else if (col.gameObject.tag == "Player" && opponentTag == "Player")
+            col.gameObject.GetComponent<PlayerMovement>().TakeDamage(true, damage);
 
         Destroy(this.gameObject);
     }

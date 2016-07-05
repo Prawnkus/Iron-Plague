@@ -57,7 +57,6 @@ public class PlayerShoot : MonoBehaviour {
             if (powerWeapon.transform.position == activePowerPosition.transform.position && powerWeapon.transform.rotation == activePowerPosition.transform.rotation)
             {
                 hasPowerUp = true;
-                Debug.Log(powerTimer);
                 powerTimer += Time.deltaTime;
             }
             else if (!hasPowerUp)
@@ -72,12 +71,11 @@ public class PlayerShoot : MonoBehaviour {
             hasPowerUp = false;
             powerWeapon.transform.position = Vector3.MoveTowards(powerWeapon.transform.position, passivePowerPosition.transform.position, powerSpeed * Time.deltaTime);
             Quaternion lookrotation = Quaternion.LookRotation(passivePowerPosition.transform.forward);
-            Debug.Log("Time's Up!");
+            hud.SetChargeAmount(0.0f);
             powerWeapon.transform.rotation = Quaternion.RotateTowards(powerWeapon.transform.rotation, lookrotation, (powerSpeed * 75) * Time.deltaTime);
             if (powerWeapon.transform.position == passivePowerPosition.transform.position && powerWeapon.transform.rotation == passivePowerPosition.transform.rotation)
             {
                 powerTimer = 0.0f;
-                hud.chargeAmount = 0.0f;
             }
         }
     }

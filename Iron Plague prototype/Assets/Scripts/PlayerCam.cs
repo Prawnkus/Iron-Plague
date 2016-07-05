@@ -13,9 +13,12 @@ public class PlayerCam : MonoBehaviour {
 
     private PlayerMovement player;
 
+
 	void Start(){
 		rb = GetComponent<Rigidbody> ();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
 	}
 
 	void Update () {
