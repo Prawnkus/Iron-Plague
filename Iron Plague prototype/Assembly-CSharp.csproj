@@ -51,6 +51,7 @@
      <Compile Include="Assets\Scripts\PlayerHUD.cs" />
      <Compile Include="Assets\Scripts\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\PlayerShoot.cs" />
+     <Compile Include="Assets\Scripts\ProjectileDeath.cs" />
      <Compile Include="Assets\Scripts\RespawnPoints.cs" />
      <Compile Include="Assets\Scripts\RespawnSystem.cs" />
      <Compile Include="Assets\Scripts\ShootingProjectile.cs" />

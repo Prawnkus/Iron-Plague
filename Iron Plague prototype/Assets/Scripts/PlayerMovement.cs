@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour {
 	private float playerSpeed;
 	[SerializeField]
 	private float playerGravity = 20.0f;
-    private float jumpSpeed = 8.5f;
+    private float jumpSpeed = 9.5f;
     [HideInInspector]
     public float health = 100.0f, dmgToTake;
     [HideInInspector]
@@ -32,23 +32,24 @@ public class PlayerMovement : MonoBehaviour {
         controller = GetComponent<CharacterController>();
         cam = GameObject.FindWithTag("MainCamera").GetComponent<PlayerCam>();
         respawnSystem = GameObject.Find("Respawn System").GetComponent<RespawnSystem>();
-		GameObject gameManager = GameObject.Find ("GameManager");
-		inputControl = gameManager.GetComponent<InputControl> ();
+        inputControl = GameObject.Find("GameControlManager").GetComponent<InputControl>();
 	}
 
 	void Update () {
 
         if (hasTakenDamage)
         {
+            health -= dmgToTake;
+
+            if (health > 0)
+            {
+                hasTakenDamage = false;
+            }
+
             if (health <= 0)
             {
                 health = 0;
                 DeathSequence();
-            }
-            else
-            {
-                health -= dmgToTake;
-                hasTakenDamage = false;
             }
         }
 
@@ -91,7 +92,7 @@ public class PlayerMovement : MonoBehaviour {
         {
             respawnSystem.Respawn(this.transform);
             isAlive = true;
-            health = 100.0f;
+            health = 110.0f;
         }
     }
 }

@@ -9,7 +9,7 @@ public class RespawnSystem : MonoBehaviour {
 
     public void Respawn(Transform target)
     {
-        for (int i = 0; i < spawnPoints.Length; i++)
+        for (int i = spawnPoints.Length - 1; i >= 0; i--)
         {
             if (spawnPoints[i].hasPassed)
             {

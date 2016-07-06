@@ -36,74 +36,77 @@ public class EnemyAIControls : MonoBehaviour {
         delay = 0.25f;
         dmgDelay = 0.085f;
         shootTimer = delay;
-        rotationSpeed = 175f;
+        rotationSpeed = 155f;
 
     }
 
     void FixedUpdate()
     {
-        if (hasSeenTarget)
+        if (!hud.menu)
         {
-            // When the enemy has seen the player, it will chase it until death.
-            if (Physics.Raycast(this.transform.position, Direction(player), out playerHit))
+            if (hasSeenTarget)
             {
-                if (DistanceFromTarget(player.position) < 25.0f)
-                    if (playerHit.collider.gameObject.tag == player.tag)
-                        canSeeTarget = true;
-                    else if (playerHit.collider.gameObject.tag != player.tag)
-                        canSeeTarget = false;
-            }
+                // When the enemy has seen the player, it will chase it until death.
+                if (Physics.Raycast(this.transform.position, Direction(player), out playerHit))
+                {
+                    if (DistanceFromTarget(player.position) < 25.0f)
+                        if (playerHit.collider.gameObject.tag == player.tag)
+                            canSeeTarget = true;
+                        else if (playerHit.collider.gameObject.tag != player.tag)
+                            canSeeTarget = false;
+                }
 
-            if (DistanceFromTarget(player.position) <= 15.0f && canSeeTarget)
-            {
-                if (!agent.SetDestination(this.transform.position))
-                    StopMoving();
-                else
-                    AimTowardsTarget(player);
-            }
-            else if (DistanceFromTarget(player.position) > 15.0f || !canSeeTarget)
-                MoveToTarget(player.position);
-        }
-        else
-        {
-            // Passive pratrol pathing
-            PassivePathing(destination1, destination2);
-            if (Physics.Raycast(this.transform.position, Direction(player), out playerHit))
-            {
-                if (DistanceFromTarget(player.position) < 25.0f)
-                    if (playerHit.collider.gameObject.tag == player.tag)
-                        hasSeenTarget = true;
-            }
-        }
-        // Death
-        if (hasTakenDamage)
-        {
-            if (dmgTimer >= dmgDelay)
-            {
-                health -= dmgToTake;
-                hasTakenDamage = false;
-                rend.material.color = baseColor;
+                if (DistanceFromTarget(player.position) <= 20.0f && canSeeTarget)
+                {
+                    if (!agent.SetDestination(this.transform.position))
+                        StopMoving();
+                    else
+                        AimTowardsTarget(player);
+                }
+                else if (DistanceFromTarget(player.position) > 20.0f || !canSeeTarget)
+                    MoveToTarget(player.position);
             }
             else
             {
-                dmgTimer += Time.fixedDeltaTime;
-                rend.material.color = Color.red;
+                // Passive pratrol pathing
+                PassivePathing(destination1, destination2);
+                if (Physics.Raycast(this.transform.position, Direction(player), out playerHit))
+                {
+                    if (DistanceFromTarget(player.position) < 20.0f)
+                        if (playerHit.collider.gameObject.tag == player.tag)
+                            hasSeenTarget = true;
+                }
+            }
+            // Death
+            if (hasTakenDamage)
+            {
+                if (dmgTimer >= dmgDelay)
+                {
+                    health -= dmgToTake;
+                    hasTakenDamage = false;
+                    rend.material.color = baseColor;
+                }
+                else
+                {
+                    dmgTimer += Time.fixedDeltaTime;
+                    rend.material.color = Color.red;
+                }
+            }
+            else
+                dmgTimer = 0.0f;
+
+            if (health <= 0.0f)
+            {
+                hud.IncreaseCharger((int)Random.Range(5, 8));
+                hud.enemyKill += 1;
+                Destroy(baseObj);
             }
         }
-        else
-            dmgTimer = 0.0f;
-
-        if (health <= 0.0f)
-        {
-            hud.IncreaseCharger((int)Random.Range(5, 7));
-            Destroy(baseObj);
-        }
-
     }
 
     public float DistanceFromTarget(Vector3 target)
     {
-        return Vector3.Distance(this.transform.position, target);
+        return Vector3.Distance(target, this.transform.position);
     }
 
     private void StopMoving()
@@ -123,15 +126,15 @@ public class EnemyAIControls : MonoBehaviour {
 
     private void PassivePathing(Transform location1, Transform location2)
     {
-        if (DistanceFromTarget(location1.position) < 1.0f)
+        if (DistanceFromTarget(location1.position) < 1f)
             MoveToTarget(destination2.position);
-        else if (DistanceFromTarget(location2.position) < 1.0f)
+        if (DistanceFromTarget(location2.position) < 1f)
             MoveToTarget(destination1.position);
     }
 
     private void AimTowardsTarget(Transform target)
     {
-        if (Vector3.Angle(this.transform.forward, Direction(target)) <= 5.5f)
+        if (Vector3.Angle(this.transform.forward, Direction(target)) <= 6.5f)
         {
             Shoot();
             Precision(target, 2.5f);

@@ -8,20 +8,31 @@ public class ShootingProjectile : MonoBehaviour {
     [HideInInspector]
     public float damage;
     [SerializeField]
-    private ParticleSystem partiles;
+    private ParticleSystem partiles, deathParticle;
     private string opponentTag = "Player";
+    private float deathTime;
 
     void Start()
     {
         if (!transform.GetComponent<Rigidbody>())
             Debug.Log("Missing Rigidbody on projectiles!");
-        damage = 15.0f;
+        damage = 20.0f;
         partiles.startColor = Color.red;
+        deathParticle.startColor = Color.red;
         if (shotByPlayer)
         {
             opponentTag = "Enemy";
             partiles.startColor = Color.cyan;
+            deathParticle.startColor = Color.cyan;
         }
+    }
+
+    void FixedUpdate()
+    {
+        if (deathTime > 6.5f)
+            Destroy(this.gameObject);
+        else
+            deathTime += Time.fixedDeltaTime;
     }
 
     void OnCollisionEnter(Collision col)
@@ -29,8 +40,15 @@ public class ShootingProjectile : MonoBehaviour {
         if (col.gameObject.tag == "Enemy" && opponentTag == "Enemy")
             col.gameObject.GetComponent<EnemyAIControls>().TakeDamage(true, damage);
         else if (col.gameObject.tag == "Player" && opponentTag == "Player")
-            col.gameObject.GetComponent<PlayerMovement>().TakeDamage(true, damage);
+            col.gameObject.GetComponent<PlayerMovement>().TakeDamage(true, ((int)damage/2f));
 
+        Death();
         Destroy(this.gameObject);
+    }
+
+    void Death()
+    {
+        GameObject explosion = null;
+        explosion = Instantiate(deathParticle, this.transform.position, this.transform.rotation) as GameObject;
     }
 }

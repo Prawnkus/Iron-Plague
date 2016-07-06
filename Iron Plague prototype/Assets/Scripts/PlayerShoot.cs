@@ -42,7 +42,7 @@ public class PlayerShoot : MonoBehaviour {
         GameObject clone = null;
         clone = Instantiate(Projectiles, _weapon.transform.GetChild(0).position, _weapon.transform.GetChild(0).rotation) as GameObject;
         clone.GetComponent<ShootingProjectile>().shotByPlayer = true;
-        clone.GetComponent<Rigidbody>().AddForce(clone.transform.forward * 3000.0f);
+        clone.GetComponent<Rigidbody>().AddForce(clone.transform.forward * 2000.0f);
     }
 
     private void Reload(GameObject _weapon)
