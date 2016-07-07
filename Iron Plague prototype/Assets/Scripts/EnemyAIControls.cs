@@ -53,21 +53,21 @@ public class EnemyAIControls : MonoBehaviour {
                 // When the enemy has seen the player, it will chase it until death.
                 if (Physics.Raycast(this.transform.position, Direction(player), out playerHit))
                 {
-                    if (DistanceFromTarget(player.position) < 25.0f)
+                    if (DistanceFromTarget(player.position) < 1000.0f)
                         if (playerHit.collider.gameObject.tag == player.tag)
                             canSeeTarget = true;
                         else if (playerHit.collider.gameObject.tag != player.tag)
                             canSeeTarget = false;
                 }
 
-                if (DistanceFromTarget(player.position) <= 20.0f && canSeeTarget)
+                if (DistanceFromTarget(player.position) <= 60.0f && canSeeTarget)
                 {
                     if (!agent.SetDestination(this.transform.position))
                         StopMoving();
                     else
                         AimTowardsTarget(player);
                 }
-                else if (DistanceFromTarget(player.position) > 20.0f || !canSeeTarget)
+                else if (DistanceFromTarget(player.position) > 40.0f || !canSeeTarget)
                     MoveToTarget(player.position);
             }
             else
@@ -76,7 +76,7 @@ public class EnemyAIControls : MonoBehaviour {
                 PassivePathing(destination1, destination2);
                 if (Physics.Raycast(this.transform.position, Direction(player), out playerHit))
                 {
-                    if (DistanceFromTarget(player.position) < 20.0f)
+                    if (DistanceFromTarget(player.position) < 40.0f)
                         if (playerHit.collider.gameObject.tag == player.tag)
                             hasSeenTarget = true;
                 }
