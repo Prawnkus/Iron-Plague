@@ -9,6 +9,9 @@ public class EnemyAIControls : MonoBehaviour {
     private RaycastHit hit, playerHit;
     private Vector3 direction = Vector3.zero;
     private Transform direct;
+	public AudioClip shootSound;
+	public AudioSource enemyAudio;
+
     [HideInInspector]
     public float health = 100.0f;
     [HideInInspector]
@@ -31,6 +34,7 @@ public class EnemyAIControls : MonoBehaviour {
         rend = GetComponent<Renderer>();
         hud = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<PlayerHUD>();
         MoveToTarget(destination1.position);
+		enemyAudio = GetComponent<AudioSource> ();
 
         baseColor = Color.gray;
         delay = 0.25f;
@@ -158,6 +162,9 @@ public class EnemyAIControls : MonoBehaviour {
             clone.GetComponent<ShootingProjectile>().shotByPlayer = false;
             clone.GetComponent<Rigidbody>().AddForce(clone.transform.forward * 3000.0f);
             shootTimer = 0.0f;
+
+			enemyAudio.clip = shootSound;
+			enemyAudio.Play ();
         }
         else
             shootTimer += Time.fixedDeltaTime;

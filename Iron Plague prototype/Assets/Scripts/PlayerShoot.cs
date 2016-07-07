@@ -6,6 +6,8 @@ public class PlayerShoot : MonoBehaviour {
     private float shootTimer, delay, powerSpeed;
     private float powerTimer, powerDelay;
     private bool hasPowerUp, hasPowerUpReady;
+	private AudioSource weaponAudio;
+	public AudioClip gunSound;
 
     [SerializeField]
     private GameObject Projectiles, weapon, powerWeapon, activePowerPosition, passivePowerPosition;
@@ -13,6 +15,7 @@ public class PlayerShoot : MonoBehaviour {
 
 	void Start () {
         hud = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<PlayerHUD>();
+		weaponAudio = GetComponent<AudioSource> ();
         delay = 0.1f;
         powerSpeed = 2.0f;
         powerTimer = 0.0f;
@@ -21,6 +24,7 @@ public class PlayerShoot : MonoBehaviour {
 	}
 	
 	void Update () 
+
     {
         if (Input.GetMouseButton(0) || Input.GetMouseButtonDown(0))
         {
@@ -42,7 +46,11 @@ public class PlayerShoot : MonoBehaviour {
         GameObject clone = null;
         clone = Instantiate(Projectiles, _weapon.transform.GetChild(0).position, _weapon.transform.GetChild(0).rotation) as GameObject;
         clone.GetComponent<ShootingProjectile>().shotByPlayer = true;
-        clone.GetComponent<Rigidbody>().AddForce(clone.transform.forward * 6750.0f);
+        clone.GetComponent<Rigidbody>().AddForce(clone.transform.forward * 5000.0f);
+
+		//Play sound here
+		weaponAudio.clip = gunSound;
+		weaponAudio.Play ();
     }
 
     private void Reload(GameObject _weapon)
