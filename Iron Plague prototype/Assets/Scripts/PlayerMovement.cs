@@ -22,8 +22,9 @@ public class PlayerMovement : MonoBehaviour {
     private RespawnSystem respawnSystem;
 
     private PlayerCam cam;
+    private BloodVision vision;
 
-	private Vector3 moveDirection = Vector3.zero;
+    private Vector3 moveDirection = Vector3.zero;
 
 
 	void Awake () {
@@ -32,13 +33,15 @@ public class PlayerMovement : MonoBehaviour {
         cam = GameObject.FindWithTag("MainCamera").GetComponent<PlayerCam>();
         respawnSystem = GameObject.Find("Respawn System").GetComponent<RespawnSystem>();
         inputControl = GameObject.Find("GameControlManager").GetComponent<InputControl>();
-	}
+        vision = GameObject.Find("BloodVision").GetComponent<BloodVision>();
+    }
 
 	void Update () {
 
         if (hasTakenDamage)
         {
             health -= dmgToTake;
+            vision.Bleed();
 
             if (health > 0)
             {
