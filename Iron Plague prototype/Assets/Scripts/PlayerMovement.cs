@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour {
 
-	private float playerSpeed = 8.0f;
+	private float playerSpeed = 12.0f;
 	[SerializeField]
 	private float playerGravity = 20.0f;
     private float jumpSpeed = 9.5f;

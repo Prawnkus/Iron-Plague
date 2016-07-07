@@ -1,8 +1,10 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PlayerMovement.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PlayerShoot.cs">
     <Files>
-      <File FileName="Assets\Scripts\PlayerMovement.cs" Line="48" Column="1" />
+      <File FileName="Assets\Scripts\PlayerCam.cs" Line="31" Column="54" />
+      <File FileName="Assets\Scripts\PlayerShoot.cs" Line="45" Column="77" />
+      <File FileName="Assets\Scripts\PlayerMovement.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\PlayerHUD.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>

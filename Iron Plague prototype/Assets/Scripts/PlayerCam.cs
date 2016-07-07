@@ -27,8 +27,8 @@ public class PlayerCam : MonoBehaviour {
 
         if (!hud.menu || player.isAlive)
         {
-            yRotation += Input.GetAxis("Mouse X") * 0.80f;
-            xRotation -= Input.GetAxis("Mouse Y") * 0.80f;
+            yRotation += Input.GetAxis("Mouse X") * 1.80f;
+            xRotation -= Input.GetAxis("Mouse Y") * 1.80f;
 
             xRotation = Mathf.Clamp(xRotation, -90, 90);
 
