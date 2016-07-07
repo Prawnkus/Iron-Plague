@@ -37,6 +37,11 @@ public class PlayerCam : MonoBehaviour {
 
             transform.rotation = Quaternion.Euler(this.transform.rotation.x + currXRot, this.transform.rotation.y + currYRot, this.transform.rotation.z);
         }
+        else if (hud.menu)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
         else
             transform.rotation = Quaternion.RotateTowards(this.transform.rotation, player.transform.rotation, 75.0f * Time.deltaTime);
 

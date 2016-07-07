@@ -93,21 +93,15 @@ public class PlayerHUD : MonoBehaviour {
             if (GUI.Button(new Rect(Screen.width / 2.0f - 50, Screen.height / 2.0f - 15, 100, 30), "EXIT"))
                 Application.Quit();
         }
-        else if (!ended && !menu)
-        {
+        else
             Time.timeScale = 1.0f;
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
 
         if (ended)
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             end = GUI.TextField(new Rect(Screen.width / 2 - 100, Screen.height / 2.0f - 40, 200, 25), end);
-            if (GUI.Button(new Rect(Screen.width / 2.0f - 60, Screen.height / 2.0f - 15, 120, 30), "Play Again"))
-                Application.LoadLevel(0);
-            if (GUI.Button(new Rect(Screen.width / 2.0f - 50, Screen.height / 2.0f + 30, 100, 30), "EXIT"))
+            if (GUI.Button(new Rect(Screen.width / 2.0f - 50, Screen.height / 2.0f - 15, 100, 30), "EXIT"))
                 Application.Quit();
         }
 	}
