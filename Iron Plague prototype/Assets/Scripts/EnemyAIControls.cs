@@ -40,7 +40,7 @@ public class EnemyAIControls : MonoBehaviour {
         delay = 0.25f;
         dmgDelay = 0.085f;
         shootTimer = delay;
-        rotationSpeed = 155f;
+        rotationSpeed = 230f;
 
     }
 
@@ -160,7 +160,7 @@ public class EnemyAIControls : MonoBehaviour {
             GameObject clone = null;
             clone = Instantiate(projectile, weapon.transform.position, weapon.transform.rotation) as GameObject;
             clone.GetComponent<ShootingProjectile>().shotByPlayer = false;
-            clone.GetComponent<Rigidbody>().AddForce(clone.transform.forward * 3000.0f);
+            clone.GetComponent<Rigidbody>().AddForce(clone.transform.forward * 2500.0f);
             shootTimer = 0.0f;
 
 			enemyAudio.clip = shootSound;
