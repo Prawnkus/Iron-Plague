@@ -10,7 +10,7 @@ public class PlayerHUD : MonoBehaviour {
 	public int clipAmmoCap = 30, enemyKill;
 
     public bool qPressed, activeAbility;
-    public bool menu;
+    public bool menu, ended;
     [HideInInspector]
 	private float chargeAmount;
 	private float chargeSpeed = 30f;
@@ -58,6 +58,8 @@ public class PlayerHUD : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Escape))
             menu = !menu;
+        if (enemyKill >= 31)
+            ended = true;
 	}
 
 	void OnGUI(){
@@ -94,7 +96,7 @@ public class PlayerHUD : MonoBehaviour {
         else
             Time.timeScale = 1.0f;
 
-        if (enemyKill >= 32)
+        if (ended)
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;

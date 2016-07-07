@@ -97,7 +97,7 @@ public class EnemyAIControls : MonoBehaviour {
 
             if (health <= 0.0f)
             {
-                hud.IncreaseCharger((int)Random.Range(5, 8));
+                hud.IncreaseCharger((int)Random.Range(4, 8));
                 hud.enemyKill += 1;
                 Destroy(baseObj);
             }

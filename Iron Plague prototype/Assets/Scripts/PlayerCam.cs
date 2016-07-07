@@ -7,7 +7,7 @@ public class PlayerCam : MonoBehaviour {
     [HideInInspector]
     public float currYRot;
 	[SerializeField]
-	private float sensitivity = 1;
+	private float sensitivity = 0f;
 
 	private Rigidbody rb;
 
@@ -27,13 +27,13 @@ public class PlayerCam : MonoBehaviour {
 
         if (!hud.menu || player.isAlive)
         {
-            yRotation += Input.GetAxis("Mouse X") * sensitivity;
-            xRotation -= Input.GetAxis("Mouse Y") * sensitivity;
+            yRotation += Input.GetAxis("Mouse X") * 0.80f;
+            xRotation -= Input.GetAxis("Mouse Y") * 0.80f;
 
             xRotation = Mathf.Clamp(xRotation, -90, 90);
 
-            currYRot = Mathf.SmoothDamp(currYRot, yRotation, ref yRotVelocity, 0.1f);
-            currXRot = Mathf.SmoothDamp(currXRot, xRotation, ref xRotVelocity, 0.1f);
+            currYRot = Mathf.SmoothDamp(currYRot, yRotation, ref yRotVelocity, 0.09f);
+            currXRot = Mathf.SmoothDamp(currXRot, xRotation, ref xRotVelocity, 0.09f);
 
             transform.rotation = Quaternion.Euler(this.transform.rotation.x + currXRot, this.transform.rotation.y + currYRot, this.transform.rotation.z);
         }

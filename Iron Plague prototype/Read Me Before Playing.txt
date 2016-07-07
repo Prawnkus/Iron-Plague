@@ -1,0 +1,14 @@
+Welcome to our prototype!
+
+After completing the prototype, we hope you would like to give us somefeedback on
+the gameplay itself. Did you like the rate of the game? Did you feel challenged, and did
+you enjoy it?
+
+How to Play:
+- Movement: WASD - keys
+- Shoot: movement of mouse + Left-click to shoot
+- Power Up ability: Q - key
+
+The goal of this prototype is for you to kill all the enemies in the game.
+
+Thank you for participating in our prototype!

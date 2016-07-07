@@ -29,7 +29,7 @@ public class ShootingProjectile : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (deathTime > 6.5f)
+        if (deathTime > 4.5f)
             Destroy(this.gameObject);
         else
             deathTime += Time.fixedDeltaTime;
@@ -38,9 +38,9 @@ public class ShootingProjectile : MonoBehaviour {
     void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.tag == "Enemy" && opponentTag == "Enemy")
-            col.gameObject.GetComponent<EnemyAIControls>().TakeDamage(true, damage);
+            col.gameObject.GetComponent<EnemyAIControls>().TakeDamage(true, 35);
         else if (col.gameObject.tag == "Player" && opponentTag == "Player")
-            col.gameObject.GetComponent<PlayerMovement>().TakeDamage(true, ((int)damage/2f));
+            col.gameObject.GetComponent<PlayerMovement>().TakeDamage(true, 10);
 
         Death();
         Destroy(this.gameObject);
