@@ -5,6 +5,8 @@ public class ShootingProjectile : MonoBehaviour {
 
     [HideInInspector]
     public bool shotByPlayer;
+	private AudioSource BulletAudio;
+	private AudioClip BulletBuzz;
     [HideInInspector]
     public float damage;
     [SerializeField]
@@ -14,6 +16,9 @@ public class ShootingProjectile : MonoBehaviour {
 
     void Start()
     {
+		BulletAudio = GetComponent<AudioSource> ();
+		BulletAudio.Play ();
+
         if (!transform.GetComponent<Rigidbody>())
             Debug.Log("Missing Rigidbody on projectiles!");
         damage = 20.0f;
@@ -24,7 +29,9 @@ public class ShootingProjectile : MonoBehaviour {
             opponentTag = "Enemy";
             partiles.startColor = Color.cyan;
             deathParticle.startColor = Color.cyan;
-        }
+		} else {
+			
+		}
     }
 
     void FixedUpdate()
