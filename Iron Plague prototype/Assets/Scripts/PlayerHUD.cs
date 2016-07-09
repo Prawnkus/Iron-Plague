@@ -27,9 +27,10 @@ public class PlayerHUD : MonoBehaviour {
     private PlayerMovement player;
 
 
+	// Use this for initialization
 	void Start () {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
-        chargeAmount = 0;
+		chargeAmount = 0;
 		clipAmmoLeft = clipAmmoCap;
         crosshairSize = 35.0f;
 	}
