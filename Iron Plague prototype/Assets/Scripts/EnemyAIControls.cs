@@ -24,14 +24,14 @@ public class EnemyAIControls : MonoBehaviour {
     [SerializeField]
     private Transform player, destination1, destination2;
     [SerializeField]
-    private GameObject weapon, projectile, baseObj;
+    private GameObject weapon, projectile, baseObj, model;
     private PlayerHUD hud;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         agent = this.transform.GetComponent<NavMeshAgent>();
-        rend = GetComponent<Renderer>();
+        rend = model.GetComponent<Renderer>();
         hud = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<PlayerHUD>();
         MoveToTarget(destination1.position);
 		enemyAudio = GetComponent<AudioSource> ();
@@ -53,14 +53,13 @@ public class EnemyAIControls : MonoBehaviour {
                 // When the enemy has seen the player, it will chase it until death.
                 if (Physics.Raycast(this.transform.position, Direction(player), out playerHit))
                 {
-                    if (DistanceFromTarget(player.position) < 1000.0f)
-                        if (playerHit.collider.gameObject.tag == player.tag)
-                            canSeeTarget = true;
-                        else if (playerHit.collider.gameObject.tag != player.tag)
-                            canSeeTarget = false;
+                    if (playerHit.collider.gameObject.tag == player.tag)
+                        canSeeTarget = true;
+                    else if (playerHit.collider.gameObject.tag != player.tag)
+                        canSeeTarget = false;
                 }
 
-                if (DistanceFromTarget(player.position) <= 60.0f && canSeeTarget)
+                if (DistanceFromTarget(player.position) <= 30.0f && canSeeTarget)
                 {
                     if (!agent.SetDestination(this.transform.position))
                         StopMoving();
