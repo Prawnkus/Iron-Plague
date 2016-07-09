@@ -37,7 +37,7 @@ public class EnemyAIControls : MonoBehaviour {
 		enemyAudio = GetComponent<AudioSource> ();
 
         baseColor = Color.gray;
-        delay = 0.25f;
+        delay = 0.40f;
         dmgDelay = 0.085f;
         shootTimer = delay;
         rotationSpeed = 230f;

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerMovement : MonoBehaviour {
 
+	private AudioSource HitAudio;
 	private float playerSpeed = 12.0f;
 	[SerializeField]
 	private float playerGravity = 20.0f;
@@ -32,6 +33,7 @@ public class PlayerMovement : MonoBehaviour {
         cam = GameObject.FindWithTag("MainCamera").GetComponent<PlayerCam>();
         respawnSystem = GameObject.Find("Respawn System").GetComponent<RespawnSystem>();
         inputControl = GameObject.Find("GameControlManager").GetComponent<InputControl>();
+		HitAudio = GetComponent<AudioSource> ();
 	}
 
 	void Update () {
@@ -76,6 +78,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         hasTakenDamage = state;
         dmgToTake = dmg;
+		HitAudio.Play ();
     }
 
     private void DeathSequence()
